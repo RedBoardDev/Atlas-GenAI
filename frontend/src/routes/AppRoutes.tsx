@@ -9,7 +9,10 @@ const DashboardLayout = lazy(() => import('@components/dashboardLayout/Dashboard
 
 const AppRoutes: React.FC = () => (
   <Routes>
-    <Route path={APP_ROUTES.PUBLIC.HOME} element={<DashboardLayout />} />
+    <Route path={APP_ROUTES.PUBLIC.HOME} element={<DashboardLayout />}>
+      <Route index element={<DashboardLayout />} />
+      <Route path="c/:chatId" element={<DashboardLayout />} />
+    </Route>
 
     {/* Fallback */}
     <Route path={APP_ROUTES.ERROR.NOT_FOUND} element={<NotFound />} />

@@ -55,8 +55,3 @@
   flex-direction: column;
   overflow: hidden;
 }
-
-.content {
-  height: 90%;
-  background-color: red;
-}
