@@ -1,0 +1,10 @@
+MASTERCLASS
+https://github.com/sunng87/heatcanvas : heatmap
+https://github.com/oliverroick/Leaflet.Deflate : transforme un contour de batiment en point quand trop dézoomé
+https://github.com/ghybs/Leaflet.FeatureGroup.SubGroup : regroupe en un cercle le nombre de points quand trop dézoomé
+https://github.com/mwasil/Leaflet.Rainviewer : check la pluie
+https://github.com/windycom/API : masterclass enorme mais sur windy
+https://github.com/daniellsu/leaflet-betterscale : échelle de taille dans le coin
+https://github.com/stefanocudini/leaflet-search : Recherche de ping par nom https://geoman.io/ Dessiner sur la map https://github.com/Leaflet/Leaflet.label : Ajoute un label aux points
+https://github.com/rowanwins/leaflet-easyPrint : Imprimer la map
+https://github.com/socib/Leaflet.TimeDimension : L’huile sympa https://github.com/smeijer/leaflet-geosearch : Recherche par adresse
