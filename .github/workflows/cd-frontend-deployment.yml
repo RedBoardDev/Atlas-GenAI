@@ -1,8 +1,16 @@
-name: deploy to AWS
+name: CD / Frontend deployment
+
 on:
+  workflow_dispatch:
   push:
     branches:
       - prod
+  workflow_run:
+      workflows: ["CI / Registre"]
+      types:
+        - completed
+      branches:
+        - prod
 
 jobs:
   build-and-deploy:
@@ -14,21 +22,29 @@ jobs:
       - name: Setup node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '22'
 
-      - name: Set branch name
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Setup branch name
         run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
 
-      - name: set API URL
+      - name: Set API URL
         run: node editApiUrl.js
         working-directory: ./frontend/config
         env:
           STAGE: ${{ env.BRANCH_NAME }}
 
-      - name: Build docker image
-        run: docker build -t webapp-atlas-front -f Dockerfile .
+      - name: Build the project
+        run: docker build -t webapp-atlas-front -f ./frontend/Dockerfile ./frontend
 
-      - name: Deploy to AWS
+      - name: Deploy the project
         run: |
           docker run --rm \
           -e STAGE=${BRANCH_NAME} \

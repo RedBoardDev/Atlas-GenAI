@@ -1,11 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from './Chat.module.css';
-
-interface Message {
-  id: number;
-  sender: "user" | "ai";
-  content: string;
-}
+import { Message } from '@interfaces/Message';
 
 interface ChatProps {
   messages: Message[];
@@ -13,6 +8,14 @@ interface ChatProps {
 }
 
 const Chat: React.FC<ChatProps> = ({ messages, isTyping }) => {
+  const chatRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, [messages, isTyping]);
+
   return (
     <div className={styles.chat}>
       {messages.map((message) => (
@@ -26,6 +29,7 @@ const Chat: React.FC<ChatProps> = ({ messages, isTyping }) => {
         </div>
       ))}
       {isTyping && <div className={styles.typingIndicator}>Typing...</div>}
+      <div ref={chatRef} />
     </div>
   );
 };

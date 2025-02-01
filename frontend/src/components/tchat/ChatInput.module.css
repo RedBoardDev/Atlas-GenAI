@@ -8,34 +8,32 @@
   padding: 16px;
   width: 100%;
   box-sizing: border-box;
-  min-height: 120px; /* Hauteur minimale de la boîte */
+  min-height: 120px;
 }
 
-/* Style pour le textarea */
 .input {
   width: 100%;
   background: transparent;
   border: none;
   color: white;
   font-size: 16px;
-  font-family: inherit; /* Utilise la police du site */
+  font-family: inherit;
   padding: 8px;
   outline: none;
   align-self: flex-start;
-  resize: none; /* Empêche le redimensionnement manuel */
-  overflow-y: auto; /* Ajoute une scrollbar si nécessaire */
-  max-height: 300px; /* Hauteur maximale */
-  min-height: 44px; /* Hauteur minimale (équivalent à une ligne) */
-  line-height: 1.5; /* Espacement des lignes */
-  transition: height 0.2s ease-out; /* Animation fluide */
+  resize: none;
+  overflow-y: auto;
+  max-height: 300px;
+  min-height: 44px;
+  line-height: 1.5;
+  transition: height 0.2s ease-out;
 }
 
 .input::placeholder {
   color: rgba(153, 154, 164);
-  font-family: inherit; /* Utilise la police du site */
+  font-family: inherit;
 }
 
-/* scrollbar */
 .input {
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.6) transparent;
@@ -45,7 +43,6 @@
   scrollbar-color: rgba(255, 255, 255, 0.6) transparent;
 }
 
-/* Bouton d'envoi */
 .sendButton {
   background: #4d6bfe;
   border: none;
@@ -57,7 +54,7 @@
   align-items: center;
   justify-content: center;
   transition: background 0.3s;
-  margin-top: 8px; /* Espacement entre le textarea et le bouton */
+  margin-top: 8px;
 }
 
 .sendButton:disabled {

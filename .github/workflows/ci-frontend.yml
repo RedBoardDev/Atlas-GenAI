@@ -1,0 +1,41 @@
+name: CI / Frontend
+
+on:
+  push:
+    branches:
+      - prod
+      - main
+  pull_request:
+    paths:
+      - '.github/workflows/ci-frontend.yml'
+      - 'frontend/**'
+
+jobs:
+  build-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./frontend
+
+      - name: Build the application
+        run: npm run build
+        working-directory: ./frontend

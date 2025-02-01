@@ -55,9 +55,3 @@
   flex-direction: column;
   overflow: hidden;
 }
-
-/* Footer */
-.content {
-  height: 90%;
-  background-color: red;
-}

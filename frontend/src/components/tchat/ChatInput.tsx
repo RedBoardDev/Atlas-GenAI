@@ -35,6 +35,13 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading }) => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
   return (
     <div className={styles.chatInput}>
       <textarea
@@ -42,6 +49,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading }) => {
         placeholder="Écrivez votre message..."
         value={message}
         onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={handleKeyDown}
         disabled={isLoading}
         className={styles.input}
         rows={1}
@@ -53,10 +61,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading }) => {
       >
         {isLoading ? (
           <Spin
-          indicator={<LoadingOutlined spin />}
-          size="default"
-          className={styles.loadingIcon}
-        />
+            indicator={<LoadingOutlined spin />}
+            size="default"
+            className={styles.loadingIcon}
+          />
         ) : (
           <Icon
             name="arrowUp"
