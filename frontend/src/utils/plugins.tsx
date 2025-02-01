@@ -8,11 +8,8 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import '@geoman-io/leaflet-geoman-free';
 import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
-import '@utils/geosearch.module.css';
-import 'leaflet-easyprint';
 import 'leaflet-search';
 import '@utils/leaflet-search.module.css';
-import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 
 interface Point {
   coords: [number, number];
@@ -81,15 +78,6 @@ export const geoman = (map: L.Map) => {
   });
 }
 
-// Geosearch - possibilité de chercher une adresse précise sur la carte
-export const geosearch = (map: L.Map) => {
-  const provider = new OpenStreetMapProvider();
-  const searchControl = new (GeoSearchControl as any)({
-    provider,
-    position: 'bottomright',
-  });
-  map.addControl(searchControl);
-}
 
 // HEAT - ajoute une heatmap aux coordonnées indiquées
 
@@ -105,7 +93,7 @@ export const addHeatmap = (map: L.Map, data: [number, number, number][]) => {
   const heat = (L as any).heatLayer(data, {
     radius: 25,  // rayon de chaque "point" sur la heatmap
     blur: 15,    // flou appliqué aux points
-    maxZoom: 17, // niveau de zoom maximum pour l'affichage de la heatmap
+    maxZoom: 17
   }).addTo(map);
   return heat;
 };
@@ -131,16 +119,3 @@ export const search_layer = (map: L.Map) => {
     marker: false
   }));
 };
-
-// Print - permet de télécharger l'image actuelle, dans le but d'imprimer par la suite
-export const printer = (map: L.Map) => {
-  (L as any).easyPrint({
-    title: 'Print Map',
-    position: 'topright',
-    sizeModes: ['A4Portrait', 'A4Landscape'],
-    filename: 'myMap',
-    exportOnly: true,
-    hideControlContainer: false,
-  }).addTo(map);
-};
-// Subgroup à tester, peut etre fonctionnel mais que les données sont nazes

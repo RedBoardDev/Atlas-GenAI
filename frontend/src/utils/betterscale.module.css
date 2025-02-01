@@ -1,4 +1,7 @@
 :global(.leaflet-control-better-scale) {
+    position: relative;
+    left: 125px;
+    bottom : 5px;
 	height: 15px;
 }
 :global(.leaflet-control-better-scale-upper-first-piece) {
@@ -57,3 +60,4 @@
 :global(.leaflet-control-better-scale-second-number) {
     left: 95%;
 }
+
