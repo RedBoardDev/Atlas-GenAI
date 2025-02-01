@@ -1,0 +1,28 @@
+service: fastify-aws-serverless
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    NODE_ENV: production
+
+functions:
+  app:
+    handler: handler.handler
+    events:
+      - http:
+          path: /health
+          method: GET
+          cors: true
+      - http:
+          path: /docs
+          method: GET
+          cors: true
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+package:
+  include:
+    - static/**
