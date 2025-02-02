@@ -7,9 +7,9 @@ import { TBody } from './schemas';
 const handler = async (req: FastifyRequest, res: FastifyReply): Promise<void> => {
   const { prompt } = req.body as TBody;
 
-  const id = createNewChat(prompt);
+  const chatId = await createNewChat('user', prompt);
 
-  return res.status(HttpStatusCode.created).send({ chatId: id });
+  return res.status(HttpStatusCode.created).send({ chatId, prompt });
 
 };
 

@@ -1,8 +1,7 @@
 import { FastifyInstance } from 'fastify';
 
-import { headers, params, querystring, response } from './schemas';
+import { headers, body, params, querystring, response } from './schemas';
 import handler from './handler';
-
 
 const createChat = async (app: FastifyInstance): Promise<void> => {
   app.route({
@@ -12,6 +11,7 @@ const createChat = async (app: FastifyInstance): Promise<void> => {
       tags: ['Chat'],
       description: 'Create a chat',
       headers,
+      body,
       params,
       querystring,
       response,

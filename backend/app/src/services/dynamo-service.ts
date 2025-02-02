@@ -1,3 +1,6 @@
+import path from 'node:path';
+
+import dotenv from 'dotenv';
 import {
   DynamoDBDocumentClient,
   PutCommand,
@@ -18,13 +21,18 @@ import {
   GetCommandOutput,
   DeleteCommandInput,
   DeleteCommandOutput,
-} from "@aws-sdk/lib-dynamodb";
+  ScanCommandInput,
+  ScanCommandOutput,
+} from '@aws-sdk/lib-dynamodb';
 import {
   DynamoDBClient,
+  ScanCommand,
   UpdateItemCommand,
   UpdateItemCommandInput,
   UpdateItemCommandOutput,
-} from "@aws-sdk/client-dynamodb";
+} from '@aws-sdk/client-dynamodb';
+
+dotenv.config({ path: path.resolve(__dirname, '../../env/.env') });
 
 const credentials = {
   accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
@@ -40,10 +48,10 @@ let dbParams: {
   credentials,
 };
 
-if (process.env.STAGE === "dev") {
+if (process.env.STAGE === 'dev') {
   dbParams = {
     region: process.env.AWS_DEFAULT_REGION as string,
-    endpoint: "http://localstack:4566",
+    endpoint: 'http://localstack:4566',
     credentials,
   };
 } else {
@@ -51,8 +59,7 @@ if (process.env.STAGE === "dev") {
 }
 
 const client = new DynamoDBClient(dbParams);
-const docClient = DynamoDBDocumentClient.from(client, {marshallOptions: { removeUndefinedValues: true },});
-
+const docClient = DynamoDBDocumentClient.from(client, { marshallOptions: { removeUndefinedValues: true } });
 class DynamoService {
   create = async (params: PutCommandInput): Promise<PutCommandOutput> => {
     try {
@@ -62,9 +69,7 @@ class DynamoService {
     }
   };
 
-  batchWrite = async (
-    params: BatchWriteCommandInput
-  ): Promise<BatchWriteCommandOutput> => {
+  batchWrite = async (params: BatchWriteCommandInput): Promise<BatchWriteCommandOutput> => {
     try {
       return await docClient.send(new BatchWriteCommand(params));
     } catch (error) {
@@ -72,9 +77,7 @@ class DynamoService {
     }
   };
 
-  update = async (
-    params: UpdateCommandInput
-  ): Promise<UpdateCommandOutput> => {
+  update = async (params: UpdateCommandInput): Promise<UpdateCommandOutput> => {
     try {
       return await docClient.send(new UpdateCommand(params));
     } catch (error) {
@@ -82,9 +85,7 @@ class DynamoService {
     }
   };
 
-  updateItem = async (
-    params: UpdateItemCommandInput
-  ): Promise<UpdateItemCommandOutput> => {
+  updateItem = async (params: UpdateItemCommandInput): Promise<UpdateItemCommandOutput> => {
     try {
       return await docClient.send(new UpdateItemCommand(params));
     } catch (error) {
@@ -108,13 +109,19 @@ class DynamoService {
     }
   };
 
-  delete = async (
-    params: DeleteCommandInput
-  ): Promise<DeleteCommandOutput> => {
+  delete = async (params: DeleteCommandInput): Promise<DeleteCommandOutput> => {
     try {
       return await docClient.send(new DeleteCommand(params));
     } catch (error) {
       throw new Error(`delete-error: ${error}`);
+    }
+  };
+
+  scan = async (params: ScanCommandInput): Promise<ScanCommandOutput> => {
+    try {
+      return await docClient.send(new ScanCommand(params));
+    } catch (error) {
+      throw new Error(`scan-error: ${error}`);
     }
   };
 }

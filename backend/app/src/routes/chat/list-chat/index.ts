@@ -1,17 +1,16 @@
 import { FastifyInstance } from 'fastify';
 
-import { headers, body, params, querystring, response } from './schemas';
+import { headers, params, querystring, response } from './schemas';
 import handler from './handler';
 
-const updateChat = async (app: FastifyInstance): Promise<void> => {
+const listChat = async (app: FastifyInstance): Promise<void> => {
   app.route({
-    method: 'PUT',
+    method: 'GET',
     url: '/:chatId',
     schema: {
       tags: ['Chat'],
-      description: 'Update a chat',
+      description: 'List chat from chatId',
       headers,
-      body,
       params,
       querystring,
       response,
@@ -20,4 +19,4 @@ const updateChat = async (app: FastifyInstance): Promise<void> => {
   });
 };
 
-export default updateChat;
+export default listChat;

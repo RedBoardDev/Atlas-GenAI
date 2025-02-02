@@ -9,7 +9,7 @@
     "format:fix": "prettier --write '**/*.{js,jsx,ts,tsx,json,html,css,md}'",
     "typescript:check": "tsc --noEmit",
     "test:all": "npm run typescript:check && npm run format:check && npm run format:check",
-    "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register app/app.ts",
+"dev": "ts-node-dev --respawn --transpile-only -r dotenv/config -r tsconfig-paths/register app/app.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:seed": "ts-node prisma/seed.ts"

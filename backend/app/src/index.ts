@@ -14,7 +14,7 @@ import { setupHelmet } from '@config/helmet';
 import { setupDecorators } from '@config/decorators/setupDecorators';
 import { setupCors } from '@config/cors';
 
-dotenv.config({ path: path.resolve(__dirname, './env/.env') });
+dotenv.config({ path: path.resolve(__dirname, '../env/.env') });
 
 export const ffy = fastify({ logger: true });
 
@@ -29,7 +29,7 @@ export const setupServer = async (): Promise<void> => {
 
   // swagger
   setupSwagger(ffy);
-  
+
   // routes
   ffy.register(apiRoutes);
 

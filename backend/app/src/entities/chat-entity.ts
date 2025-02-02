@@ -11,11 +11,8 @@ export type CreateChatData = FromSchema<typeof createChatSchema>;
 
 export const updateChatSchema = {
   type: 'object',
-  properties: {
-    chatId: { type: 'string' },
-    prompt: { type: 'string' },
-  },
-  required: ['chatId', 'prompt'],
+  properties: { prompt: { type: 'string' } },
+  required: ['prompt'],
 
   additionalProperties: false,
 } as const;
