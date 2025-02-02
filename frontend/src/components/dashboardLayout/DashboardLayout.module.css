@@ -24,3 +24,37 @@
   height: 100%;
   overflow-y: auto;
 }
+
+.sidebarContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto; /* Permet le scroll si nécessaire */
+}
+
+.buttonContainer {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.questionsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* ✅ 2 colonnes */
+  gap: 10px;
+  padding: 10px;
+}
+
+.questionButton {
+  font-size: 14px;
+  text-align: center;
+}

@@ -7,14 +7,18 @@ import enEN from "antd/locale/en_US";
 import ErrorBoundary from "@components/ErrorBoundary/ErrorBoundary";
 import theme from "@config/theme";
 import AppRoutes from "@routes/AppRoutes";
+import { QuestionProvider } from "./context/QuestionContext"; 
+
 
 const App = () => (
   <ConfigProvider locale={enEN} theme={theme}>
     <ErrorBoundary>
       <Router>
-        <Suspense fallback={<Spin size="large" style={{ marginTop: "20%" }} />}>
-          <AppRoutes />
-        </Suspense>
+        <QuestionProvider> {/* ✅ Englobement de l'application */}
+          <Suspense fallback={<Spin size="large" style={{ marginTop: "20%" }} />}>
+            <AppRoutes />
+          </Suspense>
+        </QuestionProvider>
       </Router>
     </ErrorBoundary>
   </ConfigProvider>

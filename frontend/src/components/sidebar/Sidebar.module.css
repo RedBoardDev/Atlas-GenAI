@@ -55,3 +55,45 @@
   flex-direction: column;
   overflow: hidden;
 }
+
+.questionsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 120px); /* ✅ 2 colonnes, largeur fixe */
+  gap: 12px;
+  padding: 12px;
+  justify-content: center; /* ✅ Centre la grille */
+}
+
+.questionButton {
+  width: 140px; /* ✅ Largeur fixe */
+  height: 100px; /* ✅ Hauteur fixe */
+  font-size: 14px; /* ✅ Taille de police ajustée */
+  text-align: center;
+  display: flex; /* ✅ Pour centrer le texte */
+  align-items: center; /* ✅ Centrage vertical */
+  justify-content: center; /* ✅ Centrage horizontal */
+  border-radius: 12px; /* ✅ Coins arrondis */
+  background-color: #212327; /* ✅ Fond sombre */
+  color: white; /* ✅ Texte blanc */
+  border: 2px solid white; /* ✅ Bordure de la même couleur que le fond */
+  padding: 10px;
+  transition: all 0.2s ease-in-out;
+  text-align: center;
+  word-wrap: break-word;
+  white-space: normal; /* ✅ Permet au texte de revenir à la ligne */
+  overflow: hidden;
+}
+
+.questionButton:hover {
+  background-color: #2a2d32; /* ✅ Effet hover légèrement plus clair */
+  border-color: #4d6bfe; /* ✅ Bordure bleue au survol */
+}
+
+.questionButton:active {
+  background-color: #1a1c1f; /* ✅ Effet de clic plus sombre */
+}
+
+.questionButton.selected {
+  background-color: #4d6bfe; /* ✅ Bleu accent si sélectionné */
+  border-color: #4d6bfe;
+}

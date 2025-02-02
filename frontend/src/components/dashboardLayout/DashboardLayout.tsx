@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Layout } from "antd";
 import Sidebar from "@components/sidebar/Sidebar";
 import MapComponent from "@components/MapComponent";
@@ -10,7 +10,7 @@ const DashboardLayout: React.FC = () => {
   return (
     <Layout className={styles.dashboardLayout}>
       <Sider className={styles.sider} width={400}>
-        <Sidebar />
+        <Sidebar /> {/* ✅ Maintenant toutes les questions sont dans Sidebar */}
       </Sider>
 
       <Layout className={styles.mainLayout}>
