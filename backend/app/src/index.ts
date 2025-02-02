@@ -8,13 +8,12 @@ import { router as apiRoutes } from '@routes/index';
 import catchFinallyHandler from '@middlewares/catch-finally-handler';
 import ApiError from '@libs/error-management/api-error';
 import { ErrorsEnum } from '@enums/errors-enums';
-import { setupSwagger } from '@config/swagger';
 import { setupRateLimit } from '@config/rate-limit';
 import { setupHelmet } from '@config/helmet';
 import { setupDecorators } from '@config/decorators/setupDecorators';
 import { setupCors } from '@config/cors';
 
-dotenv.config({ path: path.resolve(__dirname, './env/.env') });
+dotenv.config({ path: path.resolve(__dirname, '../env/.env') });
 
 export const ffy = fastify({ logger: true });
 
@@ -28,8 +27,8 @@ export const setupServer = async (): Promise<void> => {
   setupRateLimit(ffy);
 
   // swagger
-  setupSwagger(ffy);
-  
+  // setupSwagger(ffy);
+
   // routes
   ffy.register(apiRoutes);
 

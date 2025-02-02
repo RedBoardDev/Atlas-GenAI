@@ -9,13 +9,17 @@
     "format:fix": "prettier --write '**/*.{js,jsx,ts,tsx,json,html,css,md}'",
     "typescript:check": "tsc --noEmit",
     "test:all": "npm run typescript:check && npm run format:check && npm run format:check",
-    "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register app/app.ts",
+    "dev": "ts-node-dev --respawn --transpile-only -r dotenv/config -r tsconfig-paths/register app/app.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
-    "prisma:seed": "ts-node prisma/seed.ts"
+    "prisma:seed": "ts-node prisma/seed.ts",
+    "deploy": "npx serverless deploy"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.738.0",
+    "@aws-sdk/lib-dynamodb": "^3.738.0",
     "@faker-js/faker": "^9.2.0",
+    "@fastify/aws-lambda": "^5.1.4",
     "@fastify/cors": "^10.0.1",
     "@fastify/helmet": "^12.0.1",
     "@fastify/rate-limit": "^10.1.1",
@@ -24,6 +28,7 @@
     "@prisma/client": "^5.22.0",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
+    "aws-lambda": "^1.0.7",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "fastify": "^5.0.0",

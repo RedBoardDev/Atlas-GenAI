@@ -3,8 +3,8 @@ import fastifyRateLimit from '@fastify/rate-limit';
 
 export const setupRateLimit = (ffy: FastifyInstance): void => {
   ffy.register(fastifyRateLimit, {
-    max: 100,
-    timeWindow: '15 minutes',
+    max: 250,
+    timeWindow: '5 minutes',
     addHeaders: {
       'x-ratelimit-limit': true,
       'x-ratelimit-remaining': true,
