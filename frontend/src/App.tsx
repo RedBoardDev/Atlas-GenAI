@@ -7,7 +7,7 @@ import enEN from "antd/locale/en_US";
 import ErrorBoundary from "@components/ErrorBoundary/ErrorBoundary";
 import theme from "@config/theme";
 import AppRoutes from "@routes/AppRoutes";
-import { MapProvider } from "@components/MapContext";
+import { MapProvider } from "@contexts/MapContext";
 
 const App = () => (
   <ConfigProvider locale={enEN} theme={theme}>
