@@ -2,8 +2,11 @@ import { FromSchema } from 'json-schema-to-ts';
 
 export const createChatSchema = {
   type: 'object',
-  properties: { prompt: { type: 'string' } },
-  required: ['prompt'],
+  properties: {
+    chatId: { type: 'string' },
+    prompt: { type: 'string' },
+  },
+  required: ['chatId', 'prompt'],
   additionalProperties: false,
 } as const;
 

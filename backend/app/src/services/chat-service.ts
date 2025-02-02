@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import DynamoService from '@services/dynamo-service';
 import {
   PutCommandInput,
@@ -7,8 +6,6 @@ import {
   ScanCommandInput,
   ScanCommandOutput,
 } from '@aws-sdk/lib-dynamodb';
-
-import { wsConnections } from './ws-connection';
 
 const TABLE_NAME = process.env.CHATS_TABLE || 'Chats';
 
@@ -25,8 +22,7 @@ export interface Chat {
   updatedAt: number;
 }
 
-export const createNewChat = async (role: 'user' | 'IA', initialMessage: string): Promise<string> => {
-  const chatId = uuidv4();
+export const createNewChat = async (chatId: string, role: 'user' | 'IA', initialMessage: string): Promise<string> => {
   const now = Date.now();
   const item: Chat = {
     chatId,
@@ -100,19 +96,6 @@ const simulateResponse = (chatId: string, message: string): void => {
     };
 
     await DynamoService.update(updateParams);
-
-    const socket = wsConnections.get(chatId);
-    if (socket && socket.readyState === socket.OPEN) {
-      socket.send(
-        JSON.stringify({
-          chatId,
-          role: 'IA',
-          text: simulatedResponse,
-          timestamp: now,
-        }),
-      );
-    }
-    console.log(`Chat ${chatId} – Réponse envoyée via websocket après ${delay}ms : ${simulatedResponse}`);
   }, delay);
 };
 

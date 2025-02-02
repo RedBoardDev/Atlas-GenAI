@@ -20,12 +20,12 @@ const Chat: React.FC<ChatProps> = ({ messages, isTyping }) => {
     <div className={styles.chat}>
       {messages.map((message) => (
         <div
-          key={message.id}
+          key={message.timestamp}
           className={`${styles.message} ${
-            message.sender === "user" ? styles.userMessage : styles.aiMessage
+            message.role === "user" ? styles.userMessage : styles.aiMessage
           }`}
         >
-          {message.content}
+          {message.text}
         </div>
       ))}
       {isTyping && <div className={styles.typingIndicator}>Typing...</div>}

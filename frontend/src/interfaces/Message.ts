@@ -1,6 +1,6 @@
 
 export interface Message {
-  id: number;
-  sender: "user" | "ai";
-  content: string;
+  role: "IA" | "user";
+  text: string;
+  timestamp: number;
 }
