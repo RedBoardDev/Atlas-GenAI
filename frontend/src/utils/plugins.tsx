@@ -1,121 +1,100 @@
 import L from "leaflet";
-import 'leaflet.heat';
-import 'leaflet.featuregroup.subgroup';
-import '@utils/betterscale.module.css';
-import 'leaflet-betterscale';
-import 'leaflet.markercluster';
-import 'leaflet.markercluster/dist/MarkerCluster.css';
-import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
-import '@geoman-io/leaflet-geoman-free';
-import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
-import 'leaflet-search';
-import '@utils/leaflet-search.module.css';
+import "leaflet.heat";
+import "leaflet.featuregroup.subgroup";
+import "leaflet-betterscale";
+import "leaflet.markercluster";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import "@geoman-io/leaflet-geoman-free";
+import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
+import "leaflet-search";
+import "@utils/leaflet-search.module.css";
 
 interface Point {
   coords: [number, number];
   name: string;
 }
 
-
-// Liste des marqueurs
-const markers: L.Marker[] = [
-  L.marker([48.8566, 2.3522]).bindPopup("Paris"),
-  L.marker([48.8556, 2.3521]).bindPopup("Paris"),
-  L.marker([48.8546, 2.3522]).bindPopup("Paris"),
-  L.marker([48.8536, 2.3523]).bindPopup("Paris"),
-  L.marker([48.8526, 2.3524]).bindPopup("Paris"),
-  L.marker([48.6566, 2.3522]).bindPopup("Paris"),
-  L.marker([48.4566, 2.3522]).bindPopup("Paris"),
-  L.marker([48.8566, 2.1522]).bindPopup("Paris"),
-  L.marker([48.8566, 2.5522]).bindPopup("Paris"),
-];
-// SubGroup - crée des clusters en affichant le nombre de points dans la zone correspondante
-export const subGroup = (map: L.Map) => {
+// 🔹 SubGroup - Crée des clusters et gère les marqueurs dans des groupes
+export const subGroup = (
+  map: L.Map,
+  markers: L.Marker[],
+  markerClusterGroup: L.MarkerClusterGroup
+) => {
   return new Promise<void>((resolve, reject) => {
     try {
-      // Options pour le MarkerClusterGroup
-      const options: L.MarkerClusterGroupOptions = {
-        showCoverageOnHover: true,
-        disableClusteringAtZoom: 25,
-      };
+      // 🔹 Correction : On s'assure que le `markerClusterGroup` est ajouté à la carte
+      if (!map.hasLayer(markerClusterGroup)) {
+        map.addLayer(markerClusterGroup);
+      }
 
-      // Création du groupe parent (Marker Cluster Group)
-      const parentGroup = (L as any).markerClusterGroup(options);
+      // 🔹 Correction TypeScript : Utilisation de `as any` pour éviter l'erreur TS
+      const mySubGroup = (L.featureGroup as any).subGroup(markerClusterGroup, markers);
 
-      // Création du sous-groupe via le plugin FeatureGroup.SubGroup
-      const mySubGroup = (L as any).featureGroup.subGroup(parentGroup, markers);
-
-      // Ajout des groupes à la carte
-      parentGroup.addTo(map);
+      // 🔹 Ajout des marqueurs au `subGroup`
       mySubGroup.addTo(map);
+      markerClusterGroup.addLayer(mySubGroup);
+
       resolve();
     } catch (error) {
+      console.error("Erreur dans la création du subGroup :", error);
       reject(error);
     }
   });
 };
 
-// Marqueur - ajoute des points / marqueurs aux coordonnées indiquées
-export const points: Point[] = [
-  { coords: [48.8566, 2.3522], name: "Paris" },
-  { coords: [45.764, 4.8357], name: "Lyon" },
-  { coords: [43.6047, 1.4442], name: "Toulouse" },
-  { coords: [50.6292, 3.0573], name: "Lille" },
-];
-
+// 🔹 Ajoute des marqueurs sur la carte aux coordonnées indiquées
 export const addMarkers = (map: L.Map, points: Point[]) => {
   points.forEach((point) => {
-    (L as any).marker(point.coords)
+    L.marker(point.coords)
       .addTo(map)
       .bindPopup(`<b>${point.name}</b>`);
   });
 };
 
-// Geoman - Tracer et ajouter des formes diverses sur la carte
+// 🔹 Geoman - Permet de tracer et d'ajouter des formes diverses sur la carte
 export const geoman = (map: L.Map) => {
   map.pm.addControls({
-    position: 'topleft',
+    position: "topleft",
   });
-}
+};
 
-
-// HEAT - ajoute une heatmap aux coordonnées indiquées
-
-// Exemple de données pour la heatmap (latitude, longitude, intensité)
+// 🔹 Heatmap - Ajoute une heatmap aux coordonnées indiquées
 export const heatData: [number, number, number][] = [
-  [48.8566, 2.3522, 9999.5],  // Paris
-  [43.6047, 1.4442, 0.4],  // Toulouse
-  [45.7640, 4.8357, 0.6],  // Lyon
+  [48.8566, 2.3522, 0.9], // Paris
+  [43.6047, 1.4442, 0.6], // Toulouse
+  [45.7640, 4.8357, 0.7], // Lyon
 ];
 
 export const addHeatmap = (map: L.Map, data: [number, number, number][]) => {
-  // data est un tableau de points [latitude, longitude, intensité]
   const heat = (L as any).heatLayer(data, {
-    radius: 25,  // rayon de chaque "point" sur la heatmap
-    blur: 15,    // flou appliqué aux points
-    maxZoom: 17
+    radius: 25, // Rayon de chaque point sur la heatmap
+    blur: 15, // Flou appliqué aux points
+    maxZoom: 17,
   }).addTo(map);
   return heat;
 };
 
-// Betterscale - Ajoute une échelle dans le coin de l'écran
+// 🔹 Échelle - Ajoute une échelle de distance dans le coin de l'écran
 export const scale = (map: L.Map) => {
-  (L as any).control.betterscale({ imperial: false, metric: true }).addTo(map); // enlever les arguments dans betterscale pour avoir l'échelle en miles
+  (L as any).control.betterscale({ imperial: false, metric: true }).addTo(map);
 };
 
-// Search-layer - Chercher un marqueur à partir d'un nom
+// 🔹 Recherche - Ajoute un champ de recherche pour trouver un marqueur par son nom
 export const search_layer = (map: L.Map) => {
   const searchLayer = L.layerGroup().addTo(map);
-  
-  // Test : ajout d'un marqueur temporaire
+
+  // Ajout d'un marqueur temporaire pour test
   const testMarker = L.marker([48.8566, 2.3522]).bindPopup("Test");
   searchLayer.addLayer(testMarker);
 
-  map.addControl(new (L as any).Control.Search({
-    layer: searchLayer,
-    position: 'topleft',
-    initial: false,
-    zoom: 12,
-    marker: false
-  }));
+  map.addControl(
+    new (L as any).Control.Search({
+      layer: searchLayer,
+      position: "topleft",
+      initial: false,
+      zoom: 12,
+      marker: false,
+    })
+  );
 };
