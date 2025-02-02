@@ -8,7 +8,10 @@ import ChatInput from "@components/tchat/ChatInput";
 import { v4 as uuidv4 } from "uuid";
 import ApiFct from "@services/apiService";
 import { APP_ROUTES } from "@config/appRoutes";
-import { useMap, loadPublicBuildings } from "@components/MapContext";
+import { useMap } from "@contexts/MapContext";
+import L, { Point } from "leaflet";
+import addCustomPolygonToMap from "@utils/customPolygon";
+import { addMarkers } from "@utils/plugins";
 
 const suggestions = [
   "Quelles sont les causes du changement climatique ?",
@@ -34,6 +37,8 @@ const ChatContainer: React.FC = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
+  const { map } = useMap();
+  ``;
 
   useEffect(() => {
     if (chatId) {
@@ -103,13 +108,33 @@ const ChatContainer: React.FC = () => {
     };
 
     setMessages((prev) => [...prev, aiMessage]);
-    const { map } = useMap();
-    if (!map) {
-      console.error("La carte Leaflet n'est pas encore initialisée !");
-      return;
+
+    if (map) {
+      map.flyTo([43.70986662878266, 7.255555676898211], 13);
+      addCustomPolygonToMap(map);
+
+      const points: any[] = [
+        { coords: [43.72982343, 7.25163968], name: "GROUPE SCOLAIRE THERESE ROMEO" },
+        { coords: [43.72367764, 7.25665558], name: "GROUPE SCOLAIRE CIMIEZ" },
+        { coords: [43.70159482, 7.28144122], name: "GROUPE SCOLAIRE OLIVIERS" },
+        { coords: [43.72549008, 7.2463817], name: "GROUPE SCOLAIRE MADONETTE TERRON" },
+        { coords: [43.69563527, 7.25213762], name: "GROUPE SCOLAIRE LES ACACIAS" },
+        { coords: [43.71061158, 7.2803736], name: "GROUPE SCOLAIRE SAINT CHARLES" },
+        { coords: [43.71884905, 7.28149991], name: "GROUPE SCOLAIRE COL DE VILLEFRANCHE" },
+        { coords: [43.67261498, 7.2033366], name: "MATERNELLE CHATEAU" },
+        { coords: [43.69111227, 7.29846214], name: "MATERNELLE CORNICHE FLEURIE" },
+        { coords: [43.67997549, 7.22029995], name: "MATERNELLE PIERRE MERLE" },
+        { coords: [43.67940011, 7.22550189], name: "MATERNELLE SAINT ANTOINE DE GINESTIERE" },
+        { coords: [43.73245015, 7.24824052], name: "MATERNELLE ANNEXE IUFM" },
+        { coords: [43.71486792, 7.28380342], name: "MATERNELLE VON DER WIES" },
+        { coords: [43.70323777, 7.22699537], name: "MATERNELLE SAINT EXUPERY" },
+        { coords: [43.6855425, 7.23335487], name: "MATERNELLE PESSICART" },
+        { coords: [43.71778068, 7.29516579], name: "MATERNELLE SAINT SYLVESTRE" },
+        { coords: [43.69107638, 7.20133092], name: "MATERNELLE GAIRAUTINE" },
+      ];
+
+      addMarkers(map, points);
     }
-    map.setView([43.7,7.25],13);
-    loadPublicBuildings(map);
     setIsTyping(false);
   };
 
