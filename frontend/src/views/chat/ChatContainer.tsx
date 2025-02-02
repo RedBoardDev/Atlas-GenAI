@@ -16,6 +16,18 @@ const suggestions = [
   "Comment prévenir les catastrophes naturelles ?",
 ];
 
+const fktext = `Pour Nice, les données historiques indiquent que le risque d’inondation est élevé, avec une moyenne de 2 à 3 inondations majeures par décennie. En croisant ces informations avec la Base Permanente des Équipements et l’estimation financière des infrastructures publiques, il est estimé que les dégâts potentiels pourraient atteindre jusqu’à 15 millions d’euros en cas d’inondation majeure.
+
+Infrastructures publiques de Nice à risque :
+Hôtel de Ville de Nice
+Situé en centre-ville et identifié comme se trouvant dans une zone à risque d'inondation
+
+Centre Hospitalier Universitaire (CHU) de Nice
+Exposition : En tant qu'établissement essentiel de santé, sa localisation dans ou à proximité de zones vulnérables le rend particulièrement sensible aux inondations, avec des conséquences potentiellement lourdes sur la capacité de soins d'urgence.
+
+Établissements scolaires et culturels
+Exposition : Certains établissements (lycées, collèges, centres culturels ou bibliothèques) situés dans des quartiers identifiés par nos données de zones inondables pourraient également être fortement impactés en cas d'inondation majeure`;
+
 const ChatContainer: React.FC = () => {
   const { chatId } = useParams<{ chatId?: string }>();
   const navigate = useNavigate();
@@ -51,7 +63,7 @@ const ChatContainer: React.FC = () => {
       updatedAt: number;
     } | null = null;
 
-    console.log('p1', chatId);
+    console.log("p1", chatId);
     if (!chatId) return;
     while (attempts > 0) {
       const chat = await ApiFct.getMessages(chatId);
@@ -79,6 +91,21 @@ const ChatContainer: React.FC = () => {
     setIsTyping(false);
   };
 
+  const fakePollingResponse = async () => {
+    const delay = Math.floor(Math.random() * (10000 - 5000 + 1)) + 5000;
+    await new Promise((resolve) => setTimeout(resolve, delay));
+
+    const aiMessage: Message = {
+      timestamp: Date.now(),
+      role: "IA",
+      text: fktext,
+    };
+
+    setMessages((prev) => [...prev, aiMessage]);
+    // modif map
+    setIsTyping(false);
+  };
+
   const handleNewChat = async (message: string) => {
     const chatId = uuidv4();
     navigate(`/c/${chatId}`);
@@ -103,9 +130,9 @@ const ChatContainer: React.FC = () => {
 
     if (!chatId) handleNewChat(message);
     else handleNewMessage(chatId, message);
-    console.log('d1');
-    await pollingResponse();
-    console.log('d2');
+
+    // await pollingResponse();
+    await fakePollingResponse();
   };
 
   return (
