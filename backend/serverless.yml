@@ -11,18 +11,27 @@ functions:
   app:
     handler: handler.handler
     events:
-      - http:
-          path: /health
-          method: GET
-          cors: true
-      - http:
-          path: /docs
-          method: GET
-          cors: true
+      # - http:
+      #     path: /health
+      #     method: GET
+      #     cors: true
+      # - http:
+      #     path: /docs
+      #     method: GET
+      #     cors: true
       - http:
           path: /{proxy+}
           method: ANY
           cors: true
+
 package:
   include:
     - static/**
+  exclude:
+    - node_modules/**
+    - prisma/**
+    - usefull-scripts/**
+    - Dockerfile
+    - docker-compose.yml
+    - .git/**
+    - README.md
