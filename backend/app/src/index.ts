@@ -8,6 +8,7 @@ import { router as apiRoutes } from '@routes/index';
 import catchFinallyHandler from '@middlewares/catch-finally-handler';
 import ApiError from '@libs/error-management/api-error';
 import { ErrorsEnum } from '@enums/errors-enums';
+import { setupWebsockets } from '@config/websockets';
 import { setupSwagger } from '@config/swagger';
 import { setupRateLimit } from '@config/rate-limit';
 import { setupHelmet } from '@config/helmet';
@@ -26,6 +27,7 @@ export const setupServer = async (): Promise<void> => {
   setupHelmet(ffy);
   setupCors(ffy);
   setupRateLimit(ffy);
+  setupWebsockets(ffy);
 
   // swagger
   setupSwagger(ffy);

@@ -8,6 +8,8 @@ import {
   ScanCommandOutput,
 } from '@aws-sdk/lib-dynamodb';
 
+import { wsConnections } from './ws-connection';
+
 const TABLE_NAME = process.env.CHATS_TABLE || 'Chats';
 
 export interface ChatMessage {
@@ -74,10 +76,13 @@ export const appendToChat = async (chatId: string, message: string): Promise<voi
 };
 
 const simulateResponse = (chatId: string, message: string): void => {
+  const delay = Math.floor(Math.random() * (20000 - 5000 + 1)) + 5000;
+
   setTimeout(async () => {
     const simulatedResponse = `Réponse simulée pour le message: ${message}`;
     const now = Date.now();
-    const params: UpdateCommandInput = {
+
+    const updateParams: UpdateCommandInput = {
       TableName: TABLE_NAME,
       Key: { chatId },
       UpdateExpression: 'SET messages = list_append(messages, :iaMsg), updatedAt = :now',
@@ -94,9 +99,21 @@ const simulateResponse = (chatId: string, message: string): void => {
       ReturnValues: 'UPDATED_NEW',
     };
 
-    await DynamoService.update(params);
-    console.log(`Chat ${chatId} – Réponse envoyée via websocket : ${simulatedResponse}`);
-  }, 3000);
+    await DynamoService.update(updateParams);
+
+    const socket = wsConnections.get(chatId);
+    if (socket && socket.readyState === socket.OPEN) {
+      socket.send(
+        JSON.stringify({
+          chatId,
+          role: 'IA',
+          text: simulatedResponse,
+          timestamp: now,
+        }),
+      );
+    }
+    console.log(`Chat ${chatId} – Réponse envoyée via websocket après ${delay}ms : ${simulatedResponse}`);
+  }, delay);
 };
 
 export const getChat = async (chatId: string): Promise<Chat | undefined> => {
