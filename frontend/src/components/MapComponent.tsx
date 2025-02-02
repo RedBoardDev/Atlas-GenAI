@@ -6,14 +6,16 @@ import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import { MaptilerLayer } from "@maptiler/leaflet-maptilersdk";
 import { geoman, scale, subGroup } from "@utils/plugins";
+import { useMap } from "@components/MapContext";
 
 const MapComponent: React.FC = () => {
+  const { setMap } = useMap();
   useEffect(() => {
     const map = L.map("map", {
       maxZoom: 18,  // 
-    }).setView([43.7102, 7.2620], 13);
+    }).setView([46.603354, 1.888334], 6);
     
-
+    setMap(map);
     // 🔹 Ajout de ton style personnalisé MapTiler
     const mtLayer = new MaptilerLayer({
       apiKey: "34VZkwOz4eNcq6ai3orq",
@@ -26,62 +28,6 @@ const MapComponent: React.FC = () => {
     geoman(map);
     scale(map);
 
-    // 🔹 Création du `markerClusterGroup`
-    const markerClusterGroup = L.markerClusterGroup();
-
-    // Initialisation du tableau de marqueurs
-    const markers: L.Marker[] = [];
-
-    // Fonction pour récupérer les bâtiments publics via Overpass API
-    const fetchPublicBuildings = async () => {
-      const query = `
-        [out:json];
-        area[name="Nice"]->.searchArea;
-        (
-          node["amenity"="school"](area.searchArea);
-          node["amenity"="hospital"](area.searchArea);
-          node["amenity"="university"](area.searchArea);
-          node["amenity"="library"](area.searchArea);
-          node["amenity"="police"](area.searchArea);
-          node["amenity"="fire_station"](area.searchArea);
-        );
-        out body;
-      `;
-
-      const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
-
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data.elements) {
-          data.elements.forEach((element: any) => {
-            if (element.lat && element.lon) {
-              const marker = L.marker([element.lat, element.lon], {
-                icon: L.icon({
-                  iconUrl: "https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg",
-                  iconSize: [12, 12]
-                })
-              }).bindPopup(`<b>${element.tags.amenity}</b>`);
-
-              markers.push(marker); // 🔹 Ajout du marqueur dans le tableau
-            }
-          });
-
-          // 🔹 Ajout du `markerClusterGroup` à la carte AVANT d'ajouter `subGroup`
-          map.addLayer(markerClusterGroup);
-
-          // 🔹 Ajout des marqueurs au `subGroup`, qui sera géré par le `markerClusterGroup`
-          subGroup(map, markers, markerClusterGroup);
-        }
-      } catch (error) {
-        console.error("Erreur lors de la récupération des bâtiments publics :", error);
-      }
-    };
-
-    // Charger les données
-    fetchPublicBuildings();
-
     return () => {
       map.remove();
     };
@@ -91,3 +37,4 @@ const MapComponent: React.FC = () => {
 };
 
 export default MapComponent;
+
