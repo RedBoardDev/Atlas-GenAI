@@ -13,4 +13,8 @@ const startServer = async (): Promise<void> => {
   }
 };
 
-startServer();
+if (require.main === module) {
+  startServer();
+}
+
+export { ffy };
