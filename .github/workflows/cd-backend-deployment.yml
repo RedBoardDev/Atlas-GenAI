@@ -41,5 +41,5 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.FRONTEND_AWS_DEFAULT_REGION }}
           AWS_ACCESS_KEY_ID: ${{ secrets.FRONTEND_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.FRONTEND_AWS_SECRET_ACCESS_KEY }}
-        run: npx serverless deploy --stage prod
+        run: npx serverless@3.29.0 deploy --stage prod
         working-directory: ./backend
