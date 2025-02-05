@@ -211,3 +211,5 @@ Le projet peut aussi être lancé via Docker Compose pour le backend. Les script
   - `generate-local.sh`, `migrate-local.sh` : utilitaires pour générer le client Prisma et lancer des migrations en local.
 
 ---
+
+![infra as a code](infra-as-a-code.png)

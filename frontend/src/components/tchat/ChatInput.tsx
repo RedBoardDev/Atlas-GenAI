@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Icon from "@icon";
 import styles from "./ChatInput.module.css";
-import { Spin } from "antd";
+import { Button, Modal, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
 interface ChatInputProps {
@@ -12,6 +12,7 @@ interface ChatInputProps {
 const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading }) => {
   const [message, setMessage] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const adjustTextareaHeight = () => {
     if (textareaRef.current) {
@@ -28,11 +29,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading }) => {
   }, [message]);
 
   const handleSend = () => {
-    onSendMessage(message);
-    setMessage("");
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-    }
+    // onSendMessage(message);
+    // setMessage("");
+    // if (textareaRef.current) {
+    //   textareaRef.current.style.height = "auto";
+    // }
+    setIsModalVisible(true)
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -57,6 +59,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading }) => {
       <button
         className={styles.sendButton}
         disabled={!message.trim() || isLoading}
+        // disabled
         onClick={handleSend}
       >
         {isLoading ? (
@@ -75,6 +78,25 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading }) => {
           />
         )}
       </button>
+      <Modal
+        title="Fonctionnalité désactivée"
+        visible={isModalVisible}
+        onOk={() => setIsModalVisible(false)}
+        onCancel={() => setIsModalVisible(false)}
+        footer={[
+          <Button
+            key="ok"
+            type="primary"
+            onClick={() => setIsModalVisible(false)}
+          >
+            OK
+          </Button>,
+        ]}
+      >
+        <p>
+          Cette fonctionnalité est désactivée pour des fins de démonstration.
+        </p>
+      </Modal>
     </div>
   );
 };
