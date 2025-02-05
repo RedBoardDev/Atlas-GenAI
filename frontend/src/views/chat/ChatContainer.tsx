@@ -9,15 +9,11 @@ import { v4 as uuidv4 } from "uuid";
 import ApiFct from "@services/apiService";
 import { APP_ROUTES } from "@config/appRoutes";
 import { useMap } from "@contexts/MapContext";
-import L, { Point } from "leaflet";
 import addCustomPolygonToMap from "@utils/customPolygon";
 import { addMarkers } from "@utils/plugins";
 
 const suggestions = [
-  "Quelles sont les causes du changement climatique ?",
-  "Comment se forment les ouragans ?",
-  "Quels sont les impacts du réchauffement climatique ?",
-  "Comment prévenir les catastrophes naturelles ?",
+  "Quels risques d'inondation à Nice et quels dégâts potentiels sur les infrastructures publiques ?",
 ];
 
 const fktext = `Pour Nice, les données historiques indiquent que le risque d’inondation est élevé, avec une moyenne de 2 à 3 inondations majeures par décennie. En croisant ces informations avec la Base Permanente des Équipements et l’estimation financière des infrastructures publiques, il est estimé que les dégâts potentiels pourraient atteindre jusqu’à 15 millions d’euros en cas d’inondation majeure.
@@ -38,7 +34,6 @@ const ChatContainer: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const { map } = useMap();
-  ``;
 
   useEffect(() => {
     if (chatId) {
@@ -69,7 +64,6 @@ const ChatContainer: React.FC = () => {
       updatedAt: number;
     } | null = null;
 
-    console.log("p1", chatId);
     if (!chatId) return;
     while (attempts > 0) {
       const chat = await ApiFct.getMessages(chatId);
